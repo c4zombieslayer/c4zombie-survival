@@ -20,7 +20,7 @@ export function keyUpEvent() {
 /*
     Executes upon mouse press.
 
-    @param mouse_down The position of the mouse in object form. {x, y}
+    @param mouse_down   The position of the mouse in object form. {x, y}
 */
 export function mouseDownEvent(mouse_pos) {
     console.log("mouse down")
@@ -30,7 +30,7 @@ export function mouseDownEvent(mouse_pos) {
 /*
     Executes upon mouse press.
 
-    @param mouse_down The position of the mouse in object form. {x, y}
+    @param mouse_down   The position of the mouse in object form. {x, y}
 */
 export function mouseUpEvent(mouse_pos) {
     console.log("mouse up")
@@ -40,7 +40,7 @@ export function mouseUpEvent(mouse_pos) {
 /*
     Executes upon mouse movement.
 
-    @param mouse_down The position of the mouse in object form. {x, y}
+    @param mouse_down   The position of the mouse in object form. {x, y}
 */
 export function mouseMoveEvent(mouse_pos) {
     console.log("mouse move")

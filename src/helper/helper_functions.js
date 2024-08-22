@@ -1,5 +1,6 @@
 // Helper functions for general use.
 
+
 /*
     Clamps value to the given range.
 
@@ -49,7 +50,7 @@ export function tpLerp(current, goto, amount, tp) {
 
     @param array    The array to get a random value from.
 
-    @return the random value.
+    @return         The random value.
 */
 export function getRandomElementFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
