@@ -1,21 +1,32 @@
+import { Player } from "../environment/player.js";
 import { keyDownEvent, keyUpEvent, mouseDownEvent, mouseUpEvent, mouseMoveEvent } from "../helper/input_handler.js";
 
 
 export  class Game {
     constructor() {
+        // Delta time handling.
         this.run_loop =     false;
         this.last_time =    0;
 
+
+        // Canvas set up.
         this.canvas =   document.getElementById("game-canvas");;
         this.ctx =      this.canvas.getContext("2d");
+        this.canvas.width = 800;
+        this.canvas.height = 600;
         
+
+        // Input handling.
         this.handleMouseDown =  () => mouseDownEvent(this.mouse_pos);
         this.handleMouseUp =    () => mouseUpEvent(this.mouse_pos);
         this.handleMouseMove =  () => mouseMoveEvent(this.mouse_pos);
         this.mouse_pos =        {x: 0, y: 0};
 
+
+        // Environment and interface set up.
         this.environment =  [];
         this.gui =          [];
+        this.player;
     }
 
 
@@ -26,7 +37,13 @@ export  class Game {
         this.canvas.addEventListener("mousedown",    this.handleMouseDown);
         this.canvas.addEventListener("mouseup",      this.handleMouseUp);
         this.canvas.addEventListener("mousemove",    this.handleMouseMove);
-        
+
+
+        // Create player instance.
+        this.player = new Player(64, 64);//TODO set coords
+        this.environment.push(this.player);
+
+
         // Begin game loop.
         this.run_loop = true;
         requestAnimationFrame(this.gameLoop);
