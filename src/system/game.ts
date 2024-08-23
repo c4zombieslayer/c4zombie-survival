@@ -6,7 +6,7 @@ export  class Game {
     run_loop:   boolean;
     last_time:  number;
 
-    canvas: any;
+    canvas: HTMLCanvasElement | any;
     ctx:    CanvasRenderingContext2D;
 
     mouse_pos:          {x: number, y: number};
@@ -33,34 +33,34 @@ export  class Game {
         this.canvas.height = 600;
         
 
-        // Input handling.
-        this.mouse_pos =        {x: 0, y: 0};
-        this.handleKeyDown =    (event: KeyboardEvent) =>   keyDownEvent(event);
-        this.handleKeyUp =      (event: KeyboardEvent) =>   keyUpEvent(event);
-        this.handleMouseDown =  (event: MouseEvent) =>      mouseDownEvent(event, this.mouse_pos);
-        this.handleMouseUp =    (event: MouseEvent) =>      mouseUpEvent(event, this.mouse_pos);
-        this.handleMouseMove =  (event: MouseEvent) =>      mouseMoveEvent(event, this.mouse_pos);
-
-
         // Environment and interface set up.
         this.environment =  [];
         this.gui =          [];
         this.player;
+
+
+        // Input handling.
+        this.mouse_pos =        {x: 0, y: 0};
+        this.handleKeyDown =    (event: KeyboardEvent) =>   keyDownEvent(event, this.player);
+        this.handleKeyUp =      (event: KeyboardEvent) =>   keyUpEvent(event, this.player);
+        this.handleMouseDown =  (event: MouseEvent) =>      mouseDownEvent(event, this.mouse_pos);
+        this.handleMouseUp =    (event: MouseEvent) =>      mouseUpEvent(event, this.mouse_pos);
+        this.handleMouseMove =  (event: MouseEvent) =>      mouseMoveEvent(event, this.mouse_pos, this.canvas);
     }
 
 
     initiallize() {
+        // Create player instance.
+        this.player = new Player(64, 64);//TODO set coords
+        this.environment.push(this.player);
+
+
         // Connect event listeners.
         document.addEventListener("keydown",        this.handleKeyDown);
         document.addEventListener("keyup",          this.handleKeyUp);
         this.canvas.addEventListener("mousedown",   this.handleMouseDown);
         this.canvas.addEventListener("mouseup",     this.handleMouseUp);
         this.canvas.addEventListener("mousemove",   this.handleMouseMove);
-
-
-        // Create player instance.
-        this.player = new Player(64, 64);//TODO set coords
-        this.environment.push(this.player);
 
 
         // Begin game loop.
@@ -71,10 +71,10 @@ export  class Game {
 
     shutdown() {
         // Disconnect event listeners.
-        document.removeEventListener("keydown",      keyDownEvent);
-        document.removeEventListener("keyup",      keyUpEvent);
+        document.removeEventListener("keydown",         this.handleKeyDown);
+        document.removeEventListener("keyup",           this.handleKeyUp);
         this.canvas.removeEventListener("mousedown",    this.handleMouseDown);
-        this.canvas.removeEventListener("mouseup",    this.handleMouseUp);
+        this.canvas.removeEventListener("mouseup",      this.handleMouseUp);
         this.canvas.removeEventListener("mousemove",    this.handleMouseMove);
 
         // Shut down game loop.
@@ -113,6 +113,10 @@ export  class Game {
 
 
     draw(delta_time: number) {
+        // Clear screen.
+        this.ctx.fillStyle = "white";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
         // Draw game.
         for(let i = 0; i < this.environment.length; ++i) {
             this.environment[i].draw(this.ctx);//TODO imagelib.

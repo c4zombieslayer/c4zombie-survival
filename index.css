@@ -1,11 +1,16 @@
+:root {
+    --background: #FFFFFF;
+    --site-background: #000000;
+}
+
 body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: orange;
+    background-color: var(--site-background);
 
 }
 
 #game-canvas {
-    background-color: red;
+    background-color: var(--background);
 }
