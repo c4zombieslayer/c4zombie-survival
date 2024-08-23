@@ -10,7 +10,7 @@
 
     @return         The clamped value.
 */
-export function clamp(value, min, max) {
+export function clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max);
 }
 
@@ -24,7 +24,7 @@ export function clamp(value, min, max) {
 
     @return         The interpolated value.
 */
-export function lerp(current, goto, amount) {
+export function lerp(current: number, goto: number, amount: number): number {
     return current + amount * (goto - current);
 }
 
@@ -39,8 +39,8 @@ export function lerp(current, goto, amount) {
 
     @return         The interpolated value.
 */
-export function tpLerp(current, goto, amount, tp) {
-    let lerped = current + amount * (goto - current);
+export function tpLerp(current: number, goto: number, amount: number, tp: number): number {
+    let lerped: number = current + amount * (goto - current);
     return Math.abs(lerped - current) <= tp ? goto : lerped;
 }
 
@@ -52,6 +52,6 @@ export function tpLerp(current, goto, amount, tp) {
 
     @return         The random value.
 */
-export function getRandomElementFromArray(array) {
+export function getRandomElementFromArray(array: any[]): any {
     return array[Math.floor(Math.random() * array.length)];
 }

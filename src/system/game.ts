@@ -1,8 +1,25 @@
-import { Player } from "../environment/player.js";
-import { keyDownEvent, keyUpEvent, mouseDownEvent, mouseUpEvent, mouseMoveEvent } from "../helper/input_handler.js";
+import { Player } from "../environment/player.ts";
+import { keyDownEvent, keyUpEvent, mouseDownEvent, mouseUpEvent, mouseMoveEvent } from "../helper/input_handler.ts";
 
 
 export  class Game {
+    run_loop:   boolean;
+    last_time:  number;
+
+    canvas: any;
+    ctx:    CanvasRenderingContext2D;
+
+    mouse_pos:          {x: number, y: number};
+    handleKeyDown:    (event: KeyboardEvent) => void;
+    handleKeyUp:      (event: KeyboardEvent) => void;
+    handleMouseDown:    (event: MouseEvent) => void;
+    handleMouseUp:      (event: MouseEvent) => void;
+    handleMouseMove:    (event: MouseEvent) => void;
+
+    environment:    Array<{tick: (delta_time: number, mouse_pos:{x: number, y: number}) => void, draw: (ctx: CanvasRenderingContext2D) => void}>;
+    gui:            Array<{tick: (delta_time: number, mouse_pos:{x: number, y: number}) => void, draw: (ctx: CanvasRenderingContext2D) => void}>;
+    player:         Player;
+
     constructor() {
         // Delta time handling.
         this.run_loop =     false;
@@ -10,17 +27,19 @@ export  class Game {
 
 
         // Canvas set up.
-        this.canvas =   document.getElementById("game-canvas");;
+        this.canvas =   document.getElementById("game-canvas");
         this.ctx =      this.canvas.getContext("2d");
         this.canvas.width = 800;
         this.canvas.height = 600;
         
 
         // Input handling.
-        this.handleMouseDown =  () => mouseDownEvent(this.mouse_pos);
-        this.handleMouseUp =    () => mouseUpEvent(this.mouse_pos);
-        this.handleMouseMove =  () => mouseMoveEvent(this.mouse_pos);
         this.mouse_pos =        {x: 0, y: 0};
+        this.handleKeyDown =    (event: KeyboardEvent) =>   keyDownEvent(event);
+        this.handleKeyUp =      (event: KeyboardEvent) =>   keyUpEvent(event);
+        this.handleMouseDown =  (event: MouseEvent) =>      mouseDownEvent(event, this.mouse_pos);
+        this.handleMouseUp =    (event: MouseEvent) =>      mouseUpEvent(event, this.mouse_pos);
+        this.handleMouseMove =  (event: MouseEvent) =>      mouseMoveEvent(event, this.mouse_pos);
 
 
         // Environment and interface set up.
@@ -32,11 +51,11 @@ export  class Game {
 
     initiallize() {
         // Connect event listeners.
-        document.addEventListener("keydown",    keyDownEvent);
-        document.addEventListener("keyup",      keyUpEvent);
-        this.canvas.addEventListener("mousedown",    this.handleMouseDown);
-        this.canvas.addEventListener("mouseup",      this.handleMouseUp);
-        this.canvas.addEventListener("mousemove",    this.handleMouseMove);
+        document.addEventListener("keydown",        this.handleKeyDown);
+        document.addEventListener("keyup",          this.handleKeyUp);
+        this.canvas.addEventListener("mousedown",   this.handleMouseDown);
+        this.canvas.addEventListener("mouseup",     this.handleMouseUp);
+        this.canvas.addEventListener("mousemove",   this.handleMouseMove);
 
 
         // Create player instance.
@@ -67,13 +86,13 @@ export  class Game {
     }
 
 
-    getDeltaTime(time) {
+    getDeltaTime(time: number): number {
         // Convert to seconds.
         time *= 0.001;
 
 
         // Calculate delta time.
-        let delta_time = time - (this.last_time || time);
+        let delta_time: number = time - (this.last_time || time);
         this.last_time = time;
 
 
@@ -82,7 +101,7 @@ export  class Game {
     }
 
 
-    tick(delta_time) {
+    tick(delta_time: number) {
         // Tick game.
         for(let i = 0; i < this.environment.length; ++i) {
             this.environment[i].tick(delta_time, this.mouse_pos);
@@ -93,7 +112,7 @@ export  class Game {
     }
 
 
-    draw(delta_time) {
+    draw(delta_time: number) {
         // Draw game.
         for(let i = 0; i < this.environment.length; ++i) {
             this.environment[i].draw(this.ctx);//TODO imagelib.
@@ -104,7 +123,7 @@ export  class Game {
     }
 
 
-    gameLoop = (time) => {
+    gameLoop = (time: number) => {
         // Get delta time.
         let delta_time = this.getDeltaTime(time);
         
