@@ -1,8 +1,10 @@
-import { Player } from "../environment/player.ts";
+import { Player } from "../game_object/player.ts";
 import { keyDownEvent, keyUpEvent, mouseDownEvent, mouseUpEvent, mouseMoveEvent } from "../helper/input_handler.ts";
+import { Item } from "../game_object/item.ts";
 
 
 export  class Game {
+    // Variable types.
     run_loop:   boolean;
     last_time:  number;
 
@@ -10,16 +12,17 @@ export  class Game {
     ctx:    CanvasRenderingContext2D;
 
     mouse_pos:          {x: number, y: number};
-    handleKeyDown:    (event: KeyboardEvent) => void;
-    handleKeyUp:      (event: KeyboardEvent) => void;
-    handleMouseDown:    (event: MouseEvent) => void;
-    handleMouseUp:      (event: MouseEvent) => void;
-    handleMouseMove:    (event: MouseEvent) => void;
+    handleKeyDown:      (event: KeyboardEvent) =>   void;
+    handleKeyUp:        (event: KeyboardEvent) =>   void;
+    handleMouseDown:    (event: MouseEvent) =>      void;
+    handleMouseUp:      (event: MouseEvent) =>      void;
+    handleMouseMove:    (event: MouseEvent) =>      void;
 
     environment:    Array<{tick: (delta_time: number, mouse_pos:{x: number, y: number}) => void, draw: (ctx: CanvasRenderingContext2D) => void}>;
     gui:            Array<{tick: (delta_time: number, mouse_pos:{x: number, y: number}) => void, draw: (ctx: CanvasRenderingContext2D) => void}>;
     player:         Player;
 
+    
     constructor() {
         // Delta time handling.
         this.run_loop =     false;
@@ -53,6 +56,7 @@ export  class Game {
         // Create player instance.
         this.player = new Player(64, 64);//TODO set coords
         this.environment.push(this.player);
+        this.environment.push(new Item(128, 128));
 
 
         // Connect event listeners.
@@ -77,9 +81,11 @@ export  class Game {
         this.canvas.removeEventListener("mouseup",      this.handleMouseUp);
         this.canvas.removeEventListener("mousemove",    this.handleMouseMove);
 
+
         // Shut down game loop.
         this.run_loop = false;
         
+
         // Clear game assets.
         this.environment =  [];
         this.gui =          [];
@@ -112,10 +118,11 @@ export  class Game {
     }
 
 
-    draw(delta_time: number) {
+    draw() {
         // Clear screen.
         this.ctx.fillStyle = "white";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
 
         // Draw game.
         for(let i = 0; i < this.environment.length; ++i) {
@@ -134,7 +141,7 @@ export  class Game {
 
         // Tick and draw game.
         this.tick(delta_time);
-        this.draw(delta_time);
+        this.draw();
 
 
         // Request next frame.

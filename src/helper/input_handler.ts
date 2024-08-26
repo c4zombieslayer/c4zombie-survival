@@ -1,5 +1,5 @@
 // Input handling script.
-import { Player } from "../environment/player";
+import { Player } from "../game_object/player";
 
 
 /*

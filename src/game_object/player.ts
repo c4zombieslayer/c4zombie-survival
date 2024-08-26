@@ -1,8 +1,13 @@
 import { Vector2D } from "../system/vector.ts";
 
+
 export class Player {
+    // Variable types.
     x:          number;
     y:          number;
+
+    interactable: boolean;
+
     move_left:  number;
     move_right: number;
     move_up:    number;
@@ -11,15 +16,21 @@ export class Player {
 
 
     constructor(x: number, y: number) {
+        // Coordinates.
         this.x = x;
         this.y = y;
 
-        this.move_left = 0;
-        this.move_right = 0;
-        this.move_up = 0;
-        this.move_down = 0;
 
-        this.speed = 200;
+        // Interaction data.
+        this.interactable = false;
+
+        
+        // Movement.
+        this.move_left =    0;
+        this.move_right =   0;
+        this.move_up =      0;
+        this.move_down =    0;
+        this.speed =        200;
     }
 
 
@@ -33,6 +44,5 @@ export class Player {
     draw(ctx: CanvasRenderingContext2D) {//TODO imagelib
         ctx.fillStyle = "blue";
         ctx.fillRect(this.x, this.y, 32, 32);
-
     }
 }

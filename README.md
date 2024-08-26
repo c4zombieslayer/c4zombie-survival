@@ -2,14 +2,17 @@
 c4zombie Survival is a web based survival game platform in which crafting, hunting, and surviving is key.
 
 ## key objectives:
+- [ ] item system
+- [ ] pickup / interact system
+- [ ] build system
+- [ ] mining
+- [ ] wood chopping
 - [ ] inventory menu
 - [ ] inventory system
 - [ ] admin menu
 - [ ] admin system
 - [ ] crafting menu
 - [ ] crafting system
-- [ ] mining
-- [ ] wood chopping
 - [ ] hunting
 - [ ] main menu
 - [ ] settings
