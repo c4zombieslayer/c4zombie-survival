@@ -1,16 +1,24 @@
 :root {
-    --background: #FFFFFF;
-    --site-background: #000000;
+    --background:       #FFFFFF;
+    --site-background:  #000000;
 }
 
-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--site-background);
+html, body {
+    margin:     0 !important;
+    padding:    0 !important;
+    height: 100%;
+}
 
+
+body {
+    display:            flex;
+    align-items:        center;
+    justify-content:    center;
+
+    background-color: var(--site-background);
 }
 
 #game-canvas {
+    
     background-color: var(--background);
 }

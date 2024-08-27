@@ -32,8 +32,21 @@ export  class Game {
         // Canvas set up.
         this.canvas =   document.getElementById("game-canvas");
         this.ctx =      this.canvas.getContext("2d");
-        this.canvas.width = 800;
-        this.canvas.height = 600;
+        
+        window.addEventListener("resize", () => {//TODO convert the autosizing into a local function so it can be called on init
+            // Check if width ratio is larger than 16 / 9
+            if(window.innerWidth > window.innerHeight * (16 / 9)) {
+                this.canvas.width = window.innerHeight* (16 / 9);
+                this.canvas.height = window.innerHeight ;
+                this.ctx.scale(window.innerHeight * (16 / 9)/1600, window.innerHeight / 900);
+
+                return;
+            }
+
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerWidth * (9 / 16);
+            this.ctx.scale(window.innerWidth/1600, window.innerWidth * (9 / 16) / 900);
+        });
         
 
         // Environment and interface set up.
