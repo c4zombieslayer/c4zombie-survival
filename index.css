@@ -19,6 +19,6 @@ body {
 }
 
 #game-canvas {
-    
+    image-rendering: pixelated;
     background-color: var(--background);
 }

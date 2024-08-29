@@ -1,6 +1,7 @@
 import { Player } from "../game_object/player.ts";
 import { keyDownEvent, keyUpEvent, mouseDownEvent, mouseUpEvent, mouseMoveEvent } from "../helper/input_handler.ts";
 import { Item } from "../game_object/item.ts";
+import { resizeCanvas } from "../helper/canvas_handler.ts";
 
 
 export  class Game {
@@ -22,7 +23,9 @@ export  class Game {
     gui:            Array<{tick: (delta_time: number, mouse_pos:{x: number, y: number}) => void, draw: (ctx: CanvasRenderingContext2D) => void}>;
     player:         Player;
 
-    
+    static GAME_WIDTH: number = 1600;
+    static GAME_HEIGHT: number = 900;
+
     constructor() {
         // Delta time handling.
         this.run_loop =     false;
@@ -32,21 +35,8 @@ export  class Game {
         // Canvas set up.
         this.canvas =   document.getElementById("game-canvas");
         this.ctx =      this.canvas.getContext("2d");
-        
-        window.addEventListener("resize", () => {//TODO convert the autosizing into a local function so it can be called on init
-            // Check if width ratio is larger than 16 / 9
-            if(window.innerWidth > window.innerHeight * (16 / 9)) {
-                this.canvas.width = window.innerHeight* (16 / 9);
-                this.canvas.height = window.innerHeight ;
-                this.ctx.scale(window.innerHeight * (16 / 9)/1600, window.innerHeight / 900);
-
-                return;
-            }
-
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerWidth * (9 / 16);
-            this.ctx.scale(window.innerWidth/1600, window.innerWidth * (9 / 16) / 900);
-        });
+        resizeCanvas(this.canvas, this.ctx);
+        window.addEventListener("resize", () => {resizeCanvas(this.canvas, this.ctx)});
         
 
         // Environment and interface set up.
@@ -67,7 +57,7 @@ export  class Game {
 
     initiallize() {
         // Create player instance.
-        this.player = new Player(64, 64);//TODO set coords
+        this.player = new Player(64, 64);
         this.environment.push(this.player);
         this.environment.push(new Item(128, 128));
 
@@ -134,7 +124,7 @@ export  class Game {
     draw() {
         // Clear screen.
         this.ctx.fillStyle = "white";
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 
 
         // Draw game.
@@ -145,6 +135,9 @@ export  class Game {
             this.gui[i].draw(this.ctx);
         }
     }
+
+
+    
 
 
     gameLoop = (time: number) => {
