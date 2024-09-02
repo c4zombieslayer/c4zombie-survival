@@ -35,4 +35,4 @@ c4zombie Survival is a web based survival game platform in which crafting, hunti
 > repeat until ready for boss
 
 4. defeat boss, unlock new difficulty
-5. 
+5. give permanent boosts per death

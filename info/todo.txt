@@ -3,3 +3,4 @@ make a system for item pickup:
 when player object gets close to an item, give the item an interaction pop up
 
 add system for clicking on objects and interactions
+clicking
